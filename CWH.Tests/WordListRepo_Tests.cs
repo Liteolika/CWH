@@ -42,6 +42,16 @@ namespace CWH.Tests
         }
 
         [Test]
+        public void Add_Word_Throws_On_Empty_Word()
+        {
+            Assert.Throws<ArgumentNullException>(delegate
+            {
+                wordlist.AddWord(new WordListEntry { Word = "" });
+
+            });
+        }
+
+        [Test]
         public void CanRetrieveWordFromRepo()
         {
             var retrievedWord = wordlist.GetWord(wordentry);
@@ -123,5 +133,20 @@ namespace CWH.Tests
             Assert.IsNull(wordlist.GetWord(wordentry));
         }
 
+        [Test]
+        public void CanSearchDescription()
+        {
+            var list = wordlist.FindDescription("really");
+            Assert.IsNotEmpty(list);
+        }
+
+        [Test]
+        public void Can_Add_Description_To_Word()
+        {
+            wordlist.AddDescription(word: "starprogrammer", description: "A good programmer");
+
+            Assert.IsNotEmpty(wordlist.FindWord("starprogrammer", false).First().Descriptions);
+        }
+        
     }
 }

@@ -11,7 +11,6 @@ namespace CWH.Main
     public class WordlistRepository
     {
 
-
         private List<WordListEntry> wordList;
 
         public static WordlistRepository Create()
@@ -26,6 +25,12 @@ namespace CWH.Main
 
         public void AddWord(WordListEntry word)
         {
+            if (string.IsNullOrEmpty(word.Word))
+                throw new ArgumentNullException("word");
+
+            //if (string.IsNullOrEmpty(word.Description))
+            //    throw new ArgumentNullException("description");
+
             if (wordList.Where(x => x.Word == word.Word).Any())
                 throw new ArgumentException("word already exists");
 
@@ -84,5 +89,24 @@ namespace CWH.Main
             wordList.Remove(wordentry);
         }
 
+
+        public List<WordListEntry> FindDescription(string searchWord)
+        {
+            return wordList.ToList();
+            
+
+
+        }
+
+        public void AddDescription(string word, string description)
+        {
+            var wordEntry = wordList.Where(x => x.Word == word).FirstOrDefault();
+            if (wordEntry == null)
+                throw new ArgumentException("word not found");
+
+            wordEntry.Descriptions.Add(description);
+
+            
+        }
     }
 }
